@@ -1,0 +1,30 @@
+{
+  "name": "test_rest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "method-override": "^2.3.9",
+    "mysql": "^2.13.0",
+    "mysql2": "^1.3.5",
+    "sequelize": "^4.2.1",
+    "sharp": "^0.18.2",
+    "uniqid": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "locutus": "^2.0.9",
+    "nodemon": "^1.11.0",
+    "xml-parser": "^1.2.1"
+  },
+  "scripts": {
+    "start": "nodemon index.js --exec babel-node --presets es2015,stage-2"
+  },
+  "author": "",
+  "license": "ISC"
+}
