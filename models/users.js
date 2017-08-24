@@ -12,4 +12,4 @@ export const USERS = sequelize.define('users', {
 });
 
 // force: true will drop the table if it already exists
-USERS.sync({force: true});
+USERS.sync({force: false});

@@ -1,7 +1,7 @@
 {
   "apps" : [{
-    "name"        : "sample-app",
-    "script"      : "./app.js",
+    "name"        : "promo-back",
+    "script"      : "./index.js",
     "watch"       : true,
     "exec_interpreter" : "babel-node",
     "exec_mode"        : "fork"
