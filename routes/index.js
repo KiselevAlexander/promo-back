@@ -1,3 +1,4 @@
+import moment from 'moment';
 import uniqid from 'uniqid';
 import sharp from 'sharp';
 import ffmpeg from 'fluent-ffmpeg';
@@ -142,20 +143,20 @@ export const routes = (app, router) => {
 
                 }
 
-                if (data.status !== 1) {
-
-                    res.status(400);
-                    res.json({
-                        error: {
-                            code: 40005,
-                            type: 'session',
-                            message: 'Image wasn\'t loaded'
-                        }
-                    });
-
-                    return;
-
-                }
+                // if (data.status !== 1) {
+                //
+                //     res.status(400);
+                //     res.json({
+                //         error: {
+                //             code: 40005,
+                //             type: 'session',
+                //             message: 'Image wasn\'t loaded or video created'
+                //         }
+                //     });
+                //
+                //     return;
+                //
+                // }
 
                 const imageSrc = PATHS.image + session + '.jpg';
 
@@ -163,18 +164,58 @@ export const routes = (app, router) => {
 
                 ffmpeg(PATHS.videoPatterns + `pattern-${pattern}.mp4`)
                     .addInput(imageSrc)
-                    .addOption('-filter_complex', '[0:v][1:v]overlay=0:0:enable=\'between(t,4,8)\'')
+                    // .addOption('-filter_complex', '[0:v][1:v]scale2ref:overlay=0:0:enable=\'between(t,4,8)\'')
+                    .addOption('-filter_complex', '[1][0]scale2ref[i][m];[m][i]overlay=0:0:enable=\'between(t,4,8)\'[v]')
+                    .addOption('-map', '[v]')
+                    .addOption('-map', '0:a?')
                     .on('start', function(commandLine) {
-                        console.log('Spawned Ffmpeg with command: ' + commandLine);
-                        res.json({
-                            status: 'ok'
-                        })
+                        USERS.update({
+                                status: 2,
+                                start: moment()
+                            },
+                            {
+                                where: {
+                                    session
+                                }
+                            })
+                            .then(() => {
+                                console.log('Spawned Ffmpeg with command: ' + commandLine);
+                                res.json({
+                                    status: 'ok'
+                                })
+                            })
                     })
                     .on('progress', function(progress) {
-                        console.log('Processing `' + session + ': ' + progress.percent + '% done');
+                        try {
+                            USERS.update({
+                                    status: 2,
+                                    perc: progress.percent
+                                },
+                                {
+                                    where: {
+                                        session
+                                    }
+                                })
+                                .then(() => {
+                                    console.log('Processing `' + session + ': ' + progress.percent + '% done');
+                                })
+                        } catch (err) {
+                            
+                        }
                     })
                     .on('end', function(error) {
-                        console.log('*****OK    ');
+                        USERS.update({
+                                status: 3,
+                                end: moment()
+                            },
+                            {
+                                where: {
+                                    session
+                                }
+                            })
+                            .then(() => {
+                                console.log('*****OK    ');
+                            })
                     })
                     .on('error', function(error) {
 
@@ -212,6 +253,46 @@ export const routes = (app, router) => {
 
     router.get('/getstatus', (req, res, next) => {
 
+        const {session} = req.body;
+
+        if (!session) {
+
+            res.status(400);
+            res.json({
+                error: {
+                    code: 40003,
+                    type: 'data',
+                    message: 'Session ID is required'
+                }
+            });
+
+        }
+
+        USERS.findOne({
+            where: {
+                session
+            },
+            raw: true
+        })
+            .then((data) => {
+
+                if (!data) {
+
+                    res.status(400);
+                    res.json({
+                        error: {
+                            code: 40005,
+                            type: 'session',
+                            message: 'Session ID not found'
+                        }
+                    });
+
+                    return;
+
+                }
+
+                res.json(data);
+            })
     });
 
 
