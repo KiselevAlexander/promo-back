@@ -1,5 +1,5 @@
 {
   "verbose": true,
-  "ignore": ["frontend/*"],
+  "ignore": ["frontend/*", "video_patterns/*"],
   "execMap": {}
 }

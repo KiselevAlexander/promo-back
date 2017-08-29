@@ -143,21 +143,6 @@ export const routes = (app, router) => {
 
                 }
 
-                // if (data.status !== 1) {
-                //
-                //     res.status(400);
-                //     res.json({
-                //         error: {
-                //             code: 40005,
-                //             type: 'session',
-                //             message: 'Image wasn\'t loaded or video created'
-                //         }
-                //     });
-                //
-                //     return;
-                //
-                // }
-
                 const imageSrc = PATHS.image + session + '.jpg';
 
                 console.log(PATHS.videoPatterns + `pattern-${pattern}.mp4`);
@@ -181,7 +166,8 @@ export const routes = (app, router) => {
                             .then(() => {
                                 console.log('Spawned Ffmpeg with command: ' + commandLine);
                                 res.json({
-                                    status: 'ok'
+                                    status: 'ok',
+                                    session: session
                                 })
                             })
                     })
@@ -251,7 +237,7 @@ export const routes = (app, router) => {
     });
 
 
-    router.get('/getstatus', (req, res, next) => {
+    router.post('/getstatus', (req, res, next) => {
 
         const {session} = req.body;
 
@@ -291,7 +277,13 @@ export const routes = (app, router) => {
 
                 }
 
-                res.json(data);
+                res.json({
+                    userID: data.id,
+                    session,
+                    start: data.start,
+                    status: data.status,
+                    perc: data.perc
+                });
             })
     });
 
