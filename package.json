@@ -7,6 +7,7 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "fluent-ffmpeg": "^2.1.2",
+    "flvmeta": "^0.1.1",
     "method-override": "^2.3.9",
     "mysql": "^2.13.0",
     "mysql2": "^1.3.5",

@@ -7,7 +7,9 @@ import {USERS} from '../models';
 
 
 export const routes = (app, router) => {
-
+    router.get('/', (req, res) => {
+        res.send('Video api v0.1');
+    });
 
     router.post('/createsession', (req, res, next) => {
         const id = uniqid();
