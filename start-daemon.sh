@@ -1,1 +1,1 @@
-pm2 start --interpreter babel-node index
+pm2 start --interpreter babel-node index.js

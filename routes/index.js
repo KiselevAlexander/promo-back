@@ -1,15 +1,60 @@
 import moment from 'moment';
+import fs from 'fs';
 import uniqid from 'uniqid';
 import sharp from 'sharp';
 import ffmpeg from 'fluent-ffmpeg';
 import {PATHS} from '../config';
 import {USERS} from '../models';
 
+const OG = {
+    title: 'Создай свою мечту вместе с ИНГОССТРАХ',
+    description: 'Создай свою мечту вместе с ИНГОССТРАХ',
+    image: 'image_url',
+    url: 'site_url'
+};
+
+const renderStatic = (req, res) => {
+    fs.readFile('/home/alexander/projects/tests/promo/public/index.html', (err, data) => {
+        let tpl = Buffer(data).toString('utf-8');
+
+
+
+        const {sessionID} = req.params;
+
+        if (sessionID) {
+            USERS.find({
+                where: {
+                    session: sessionID
+                },
+                raw: true
+            })
+                .then((data) => {
+                    tpl = tpl.replace(/\{og:title\}/, OG.title);
+                    tpl = tpl.replace(/\{og:description\}/, OG.description);
+                    tpl = tpl.replace(/\{og:image\}/, `${req.protocol}://${req.headers.host}/images/${sessionID}.jpg`);
+                    tpl = tpl.replace(/\{og:video\}/, `${req.protocol}://${req.headers.host}/video/${sessionID}.mp4`);
+                    tpl = tpl.replace(/\{og:url\}/, `${req.protocol}://${req.headers.host}${req.originalUrl}`);
+                })
+        } else {
+            tpl = tpl.replace(/\{og:title\}/, OG.title);
+            tpl = tpl.replace(/\{og:description\}/, OG.description);
+            tpl = tpl.replace(/\{og:image\}/, ``);
+            tpl = tpl.replace(/\{og:video\}/, ``);
+            tpl = tpl.replace(/\{og:url\}/, `${req.protocol}://${req.headers.host}${req.originalUrl}`);
+        }
+
+        console.log(sessionID);
+
+        res.send(tpl);
+
+    });
+
+};
 
 export const routes = (app, router) => {
-    router.get('/', (req, res) => {
-        res.send('Video api v0.1');
-    });
+
+    router.get('/', renderStatic);
+    router.get('/player/:sessionID', renderStatic);
 
     router.post('/createsession', (req, res, next) => {
         const id = uniqid();
