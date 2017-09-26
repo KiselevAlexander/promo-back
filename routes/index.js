@@ -5,6 +5,7 @@ import sharp from 'sharp';
 import ffmpeg from 'fluent-ffmpeg';
 import {PATHS} from '../config';
 import {USERS} from '../models';
+import adminRoutes from './admin';
 
 const OG = {
     title: 'Создай свою мечту вместе с ИНГОССТРАХ',
@@ -52,6 +53,8 @@ const renderStatic = (req, res) => {
 };
 
 export const routes = (app, router) => {
+
+    adminRoutes(router);
 
     router.get('/', renderStatic);
     router.get('/player/:sessionID', renderStatic);
