@@ -15,7 +15,7 @@ const OG = {
 };
 
 const renderStatic = (req, res) => {
-    fs.readFile('/home/alexander/projects/tests/promo/public/index.html', (err, data) => {
+    fs.readFile('/var/www/promo/frontend/index.html', (err, data) => {
         let tpl = Buffer(data).toString('utf-8');
 
 
@@ -57,6 +57,7 @@ export const routes = (app, router) => {
     adminRoutes(router);
 
     router.get('/', renderStatic);
+    router.get('/moderator', renderStatic);
     router.get('/player/:sessionID', renderStatic);
 
     router.post('/createsession', (req, res, next) => {

@@ -1,1 +1,1 @@
-pm2 start --interpreter babel-node index.js
+pm2 start --name promo_back --interpreter babel-node index.js
