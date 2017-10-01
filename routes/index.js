@@ -3,7 +3,7 @@ import fs from 'fs';
 import uniqid from 'uniqid';
 import sharp from 'sharp';
 import ffmpeg from 'fluent-ffmpeg';
-import {PATHS} from '../config';
+import {STATIC_PATH, PATHS} from '../config';
 import {USERS} from '../models';
 import adminRoutes from './admin';
 
@@ -15,7 +15,7 @@ const OG = {
 };
 
 const renderStatic = (req, res) => {
-    fs.readFile('/var/www/promo/frontend/index.html', (err, data) => {
+    fs.readFile(`${STATIC_PATH}/index.html`, (err, data) => {
 
         let tpl = Buffer(data).toString('utf-8');
 
