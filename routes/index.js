@@ -16,12 +16,10 @@ const OG = {
 
 const renderStatic = (req, res) => {
     fs.readFile('/var/www/promo/frontend/index.html', (err, data) => {
+
         let tpl = Buffer(data).toString('utf-8');
 
-
-
         const {sessionID} = req.params;
-
         if (sessionID) {
             USERS.find({
                 where: {
@@ -30,11 +28,16 @@ const renderStatic = (req, res) => {
                 raw: true
             })
                 .then((data) => {
+
                     tpl = tpl.replace(/\{og:title\}/, OG.title);
+
+                    console.log(tpl);
                     tpl = tpl.replace(/\{og:description\}/, OG.description);
                     tpl = tpl.replace(/\{og:image\}/, `${req.protocol}://${req.headers.host}/images/${sessionID}.jpg`);
                     tpl = tpl.replace(/\{og:video\}/, `${req.protocol}://${req.headers.host}/video/${sessionID}.mp4`);
                     tpl = tpl.replace(/\{og:url\}/, `${req.protocol}://${req.headers.host}${req.originalUrl}`);
+
+                    res.send(tpl);
                 })
         } else {
             tpl = tpl.replace(/\{og:title\}/, OG.title);
@@ -42,11 +45,10 @@ const renderStatic = (req, res) => {
             tpl = tpl.replace(/\{og:image\}/, ``);
             tpl = tpl.replace(/\{og:video\}/, ``);
             tpl = tpl.replace(/\{og:url\}/, `${req.protocol}://${req.headers.host}${req.originalUrl}`);
+
+            res.send(tpl);
         }
 
-        console.log(sessionID);
-
-        res.send(tpl);
 
     });
 
