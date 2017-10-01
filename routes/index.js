@@ -37,6 +37,10 @@ const renderStatic = (req, res) => {
                     tpl = tpl.replace(/\{og:video\}/, `${req.protocol}://${req.headers.host}/video/${sessionID}.mp4`);
                     tpl = tpl.replace(/\{og:url\}/, `${req.protocol}://${req.headers.host}${req.originalUrl}`);
 
+
+                    tpl = tpl.replace(/\{content\}/, `<video src="${req.protocol}://${req.headers.host}/video/${sessionID}.mp4"></video>`);
+
+
                     res.send(tpl);
                 })
         } else {
