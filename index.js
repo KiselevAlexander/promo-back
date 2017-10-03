@@ -19,7 +19,7 @@ app.use('/static', express.static(__dirname + '/static'));
 app.use(function (req, res, next) {
     if (req.method === 'OPTIONS') {
         console.log('!OPTIONS');
-        var headers = {};
+        const headers = {};
         headers["Access-Control-Allow-Origin"] = "*";
         headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
         headers["Access-Control-Allow-Credentials"] = false;
