@@ -3,7 +3,7 @@ import fs from 'fs';
 import uniqid from 'uniqid';
 import sharp from 'sharp';
 import ffmpeg from 'fluent-ffmpeg';
-import {STATIC_PATH, PATHS} from '../config';
+import {STATIC_PATH, PATHS, PUBLIC_URL} from '../config';
 import {USERS} from '../models';
 import adminRoutes from './admin';
 
@@ -33,12 +33,12 @@ const renderStatic = (req, res) => {
 
                     console.log(tpl);
                     tpl = tpl.replace(/\{og:description\}/, OG.description);
-                    tpl = tpl.replace(/\{og:image\}/, `${req.protocol}://${req.headers.host}/images/${sessionID}.jpg`);
-                    tpl = tpl.replace(/\{og:video\}/, `${req.protocol}://${req.headers.host}/video/${sessionID}.mp4`);
-                    tpl = tpl.replace(/\{og:url\}/, `${req.protocol}://${req.headers.host}${req.originalUrl}`);
+                    tpl = tpl.replace(/\{og:image\}/, `${PUBLIC_URL}/images/${sessionID}.jpg`);
+                    tpl = tpl.replace(/\{og:video\}/, `${PUBLIC_URL}/video/${sessionID}.mp4`);
+                    tpl = tpl.replace(/\{og:url\}/, `${PUBLIC_URL}${req.originalUrl}`);
 
 
-                    tpl = tpl.replace(/\{content\}/, `<video src="${req.protocol}://${req.headers.host}/video/${sessionID}.mp4"></video>`);
+                    tpl = tpl.replace(/\{content\}/, `<video src="${PUBLIC_URL}/video/${sessionID}.mp4"></video>`);
 
 
                     res.send(tpl);
