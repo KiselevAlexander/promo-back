@@ -105,6 +105,8 @@ export const routes = (app, router) => {
             .resize(1920, 1080)
             .jpeg({progressive: true, quality: 100})
             .toFile(PATHS.image + id + '.jpg')
+            .resize(1000, 563)
+            .toFile(PATHS.image + id + '-1000x563.jpg')
             .then(() => {
                 USERS.create({
                     name,
