@@ -33,7 +33,7 @@ const renderStatic = (req, res) => {
 
                     console.log(tpl);
                     tpl = tpl.replace(/\{og:description\}/, OG.description);
-                    tpl = tpl.replace(/\{og:image\}/, `${PUBLIC_URL}/images/${sessionID}.jpg`);
+                    tpl = tpl.replace(/\{og:image\}/, `${PUBLIC_URL}/images/${sessionID}-1200x675.jpg`);
                     tpl = tpl.replace(/\{og:video\}/, `${PUBLIC_URL}/video/${sessionID}.mp4`);
                     tpl = tpl.replace(/\{og:url\}/, `${PUBLIC_URL}${req.originalUrl}`);
 
@@ -113,9 +113,9 @@ export const routes = (app, router) => {
                 }, {raw: true})
                     .then(() => {
                         sharp(imageBuf)
-                            .resize(1000, 563)
+                            .resize(1200, 675)
                             .jpeg({progressive: true, quality: 100})
-                            .toFile(PATHS.image + id + '-1000x563.jpg');
+                            .toFile(PATHS.image + id + '-1200x675.jpg');
 
                         res.json({
                             status: 'ok',
