@@ -206,12 +206,14 @@ export const routes = (app, router) => {
 
                 const imageSrc = PATHS.image + session + '.jpg';
 
-                console.log(PATHS.videoPatterns + `pattern-${pattern}.mp4`);
+                const FRAME_RANGE = {
+                    start: 19,
+                    end: 24
+                };
 
                 ffmpeg(PATHS.videoPatterns + `pattern-${pattern}.mp4`)
                     .addInput(imageSrc)
-                    // .addOption('-filter_complex', '[0:v][1:v]scale2ref:overlay=0:0:enable=\'between(t,4,8)\'')
-                    .addOption('-filter_complex', '[1][0]scale2ref[i][m];[m][i]overlay=0:0:enable=\'between(t,4,8)\'[v]')
+                    .addOption('-filter_complex', `[1][0]scale2ref[i][m];[m][i]overlay=0:0:enable=\'between(t,${FRAME_RANGE.start},${FRAME_RANGE.end})\'[v]`)
                     .addOption('-map', '[v]')
                     .addOption('-map', '0:a?')
                     .on('start', function(commandLine) {
