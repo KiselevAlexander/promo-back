@@ -15,7 +15,7 @@ const OG = {
 };
 
 const FRAME_RANGE = {
-    start: 20,
+    start: 19,
     end: 25
 };
 
