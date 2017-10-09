@@ -356,6 +356,8 @@ export const routes = (app, router) => {
 
     });
 
+    router.use(renderStatic);
+
     app.use(router);
 
 };
