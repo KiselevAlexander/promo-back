@@ -63,3 +63,4 @@ typings/
 /.idea
 /sequelize.config.js
 /config.js
+*.mp4
