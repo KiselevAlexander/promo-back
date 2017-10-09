@@ -14,6 +14,12 @@ const OG = {
     url: 'site_url'
 };
 
+const FRAME_RANGE = {
+    start: 19,
+    end: 24
+};
+
+
 const renderStatic = (req, res) => {
     fs.readFile(`${STATIC_PATH}/index.html`, (err, data) => {
 
@@ -205,11 +211,6 @@ export const routes = (app, router) => {
                 }
 
                 const imageSrc = PATHS.image + session + '.jpg';
-
-                const FRAME_RANGE = {
-                    start: 19,
-                    end: 24
-                };
 
                 ffmpeg(PATHS.videoPatterns + `pattern-${pattern}.mp4`)
                     .addInput(imageSrc)
