@@ -352,11 +352,13 @@ export const routes = (app, router) => {
     });
 
 
-    router.get('/getvideo/:session', (req, res, next) => {
+    router.get('/getvideo/:sessionID', (req, res, next) => {
 
-        const {session} = req.params;
+        const {sessionID} = req.params;
 
-        if (!session) {
+        console.log(sessionID);
+
+        if (!sessionID) {
 
             res.status(400);
             res.json({
@@ -371,7 +373,7 @@ export const routes = (app, router) => {
 
         USERS.findOne({
             where: {
-                session
+                session: sessionID
             },
             raw: true
         })
@@ -394,7 +396,7 @@ export const routes = (app, router) => {
 
                 res.json({
                     userID: data.id,
-                    session,
+                    session: sessionID,
                     start: data.start,
                     status: data.status,
                     blocked: data.blocked

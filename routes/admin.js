@@ -1,3 +1,5 @@
+import fs from 'fs';
+import {PATHS} from '../config';
 import {USERS} from '../models';
 
 const checkPass = (req, res, next) => {
@@ -74,7 +76,6 @@ const deleteVideo = (req, res, next) => {
             }
         })
             .then(() => {
-
                 res.json({
                     success: 'ok'
                 });
