@@ -352,7 +352,54 @@ export const routes = (app, router) => {
     });
 
 
-    router.get('/getvideo', (req, res, next) => {
+    router.get('/getvideo/:session', (req, res, next) => {
+
+        const {session} = req.params;
+
+        if (!session) {
+
+            res.status(400);
+            res.json({
+                error: {
+                    code: 40003,
+                    type: 'data',
+                    message: 'Session ID is required'
+                }
+            });
+
+        }
+
+        USERS.findOne({
+            where: {
+                session
+            },
+            raw: true
+        })
+            .then((data) => {
+
+                if (!data) {
+
+                    res.status(400);
+                    res.json({
+                        error: {
+                            code: 40005,
+                            type: 'session',
+                            message: 'Session ID not found'
+                        }
+                    });
+
+                    return;
+
+                }
+
+                res.json({
+                    userID: data.id,
+                    session,
+                    start: data.start,
+                    status: data.status,
+                    blocked: data.blocked
+                });
+            })
 
     });
 
