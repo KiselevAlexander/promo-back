@@ -120,6 +120,9 @@ export const routes = (app, router) => {
                     .then(() => {
                         sharp(imageBuf)
                             .resize(600, 338)
+                            .overlayWith(__dirname + '/play.png', {
+                                gravity: sharp.gravity.centre
+                            })
                             .jpeg({progressive: true, quality: 100})
                             .toFile(PATHS.image + id + '-600x338.jpg');
 
